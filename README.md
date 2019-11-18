@@ -41,8 +41,10 @@ java -Xmx5g search_dbNSFP40a -i /data/workspace/richard/zika/tmp/combined_Haplot
 ```
 
 the output of the above produced
+```
 58111 SNP(s) are found. Written to /data/workspace/richard/zika/zika_vep_dbnsfp.PASSonly.out
 554650 SNP(s) are not found. Written to /data/workspace/richard/zika/zika_vep_dbnsfp.PASSonly.out.err
+```
 however the above PASSonly.out file contains 58556 lines of variant data (445 more than stated due to duplicates (e.g. 19:44919189 and 16:1992649) arising from alternative consequences in different transcripts)
 
 to get the required annotation for input into the acmg tool the VCF was brought into GEMINI
