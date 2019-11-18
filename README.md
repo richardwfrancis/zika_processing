@@ -110,6 +110,8 @@ grep -f getdbNSFPsubset.txt tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.vcf >>
 
  edit ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.vcf to add the dbNSFP search command
 ```{bash}
+vi ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.vcf
+##dbNSFPCommand="java -Xmx5g search_dbNSFP40a -i /data/workspace/richard/zika/tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.vcf -o /data/workspace/richard/zika/zika_vep_dbnsfp.PASSonly.out -v hg19 > /data/workspace/richard/zika/zika_vep_dbnsfp.PASSonly.out.log 2>&1"
 ```
 
 make a file containing the acmg annotation for these variants to add to the VCF annotation
