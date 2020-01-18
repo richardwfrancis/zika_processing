@@ -129,6 +129,12 @@ bgzip ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf
 tabix ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf.gz
 ```
 
+filter 3 samples out of the final files
+```{bash}
+bcftools view -S ^samples2exclude.txt -O z -o combined_HaplotypeCaller.d.n.vep.PASSonly.45samples.vcf.gz combined_HaplotypeCaller.d.n.vep.PASSonly.vcf.gz
+bcftools view -S ^samples2exclude.txt -O z -o combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg_45samples.vcf.gz combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf.gz
+```
+
 final vcf headers
 ```
 ##fileformat=VCFv4.2
@@ -289,4 +295,6 @@ final vcf headers
 ##INFO=<ID=ACMG,Number=.,Type=String,Description="ACMG classification and evidence. Format: classification|pvs1|ps1|pm1|pm2|pm4|pm5|pp2|pp3">
 ##bcftools_annotateVersion=1.9-222-g7171da0+htslib-1.9-293-g5e83884-dirty
 ##bcftools_annotateCommand=annotate -a combined_dbnsfp_geminiPASSonly_acmg_anno.tsv.gz -h combined_dbnsfp_geminiPASSonly_acmg_anno.hdr.tsv -c CHROM,POS,REF,ALT,ACMG -o ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf -O v ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.vcf; Date=Mon Nov 18 10:54:25 2019
+##bcftools_viewCommand=view -S ^samples2exclude.txt -O z -o combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg_45samples.vcf.gz combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf.gz; Date=Sat Jan 18 20:51:50 2020
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	JN-102	JN-104	JN-11	JN-110	JN-114	JN-118	JN-12	JN-120	JN-122	JN-126	JN-128	JN-13	JN-136	JN-138DIL	JN-146	JN-149	JN-154DIL	JN-163	JN-165	JN-167	JN-170	JN-172	JN-174	JN-176	JN-187	JN-198DIL2	JN-206	JN-213	JN-217	JN-235	JN-239	JN-252LAB	JN-262	JN-264	JN-267	JN-283	JN-31	JN-329	JN-34	JN-344	JN-52	JN-71	JN-91	JN-94	JN-96DIL
 ```
