@@ -129,6 +129,33 @@ bgzip ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf
 tabix ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf.gz
 ```
 
+#########################
+4/6/20 - a couple of issues with the acmg code were spotted when responding to reviewers
+a new set of LP and P classifications were made and need to be added to the VCF file
+acmg_pvs1pm1Check_anno.txt - contains the correct LP and P data
+combined_dbnsfp_geminiPASSonly_acmg.tsv - contains all the acmg results (also contains erroneous pm1 and pvs1 data)
+I can correct the pm1 data by looking at the pfam_domain and domains columns
+I cannot correct the pvs1 column without a fresh acmg database
+So I have bitten the bullet and generated a new acmg database using the 242 genes from combined_dbnsfp_geminiPASSonly_acmg.tsv that were deemed pvs1
+```{bash}
+awk -v FS="\t" '{if ($22 == 1){ print $9; } }' combined_dbnsfp_geminiPASSonly_acmg.tsv | sort -u > combined_dbnsfp_geminiPASSonly_acmg_uniqueGenes_pvs1.tsv
+# run on my computer in /Users/rfrancis_adm/Documents/TKI/GeneticsHealth/Timo/zika/scientific_data_paper/submitted_201219/responseToReviewers/files4table2/createNewacmgdb
+python3 ../../Phenoparser/scripts/get_gene_disease.py -k <OMIM_KEY> -g combined_dbnsfp_geminiPASSonly_acmg_uniqueGenes_pvs1.tsv -t file -o acmg_id_zika1.db > gd1.log 2>&1
+```
+Need to use this to merge the disease data onto this file for each variant
+Then need to reassign the 1s and 0s for pvs1 and pm1
+	For any of the corrected data I need to reassign the acmg classifier 
+All of the data in acmg_pvs1pm1Check_anno.txt is correct so use that in preference to the data in combined_dbnsfp_geminiPASSonly_acmg.tsv
+Make a final corrected file to use in the annotation
+Annotate as below
+```{bash}
+echo '##INFO=<ID=ACMG,Number=.,Type=String,Description="ACMG classification and evidence. Format: classification|pvs1|ps1|pm1|pm2|pm4|pm5|pp2|pp3">' > combined_dbnsfp_geminiPASSonly_acmg_anno.hdr.tsv
+bcftools annotate -a combined_dbnsfp_geminiPASSonly_acmg_anno.tsv.gz -h combined_dbnsfp_geminiPASSonly_acmg_anno.hdr.tsv -c CHROM,POS,REF,ALT,ACMG -o ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf -O v ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.vcf
+bgzip ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf
+tabix ./tmp/combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf.gz
+```
+#########################
+
 filter 3 samples out of the final files
 ```{bash}
 bcftools view -S ^samples2exclude.txt -O z -o combined_HaplotypeCaller.d.n.vep.PASSonly.45samples.vcf.gz combined_HaplotypeCaller.d.n.vep.PASSonly.vcf.gz
