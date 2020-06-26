@@ -162,6 +162,21 @@ bcftools view -S ^samples2exclude.txt -O z -o combined_HaplotypeCaller.d.n.vep.P
 bcftools view -S ^samples2exclude.txt -O z -o combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg_45samples.vcf.gz combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.vcf.gz
 ```
 
+download and format for EGA
+```{bash}
+wget https://ega-archive.org/files/EgaCryptor.zip
+unzip EgaCryptor.zip
+java -jar ../EGAcryptor/EGA-Cryptor-2.0.0/ega-cryptor-2.0.0.jar -i "combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.060620_45samples.vcf.gz
+,combined_HaplotypeCaller.d.n.vep.PASSonly.dbNSFPonly.acmg.060620.vcf.gz"
+```
+
+make a sample-less version for EVA
+```{bash}
+bcftools query -l combined_HaplotypeCaller.d.n.vep.PASSonly_45samples.vcf.gz > all_final_45_samples.txt
+bcftools view -S ^all_final_45_samples.txt -O z -o combined_HaplotypeCaller.d.n.vep.PASSonly_nosamplegenotypes.vcf.gz combined_HaplotypeCaller.d.n.vep.PASSonly_45samples.vcf.gz
+```
+
+
 final vcf headers
 ```
 ##fileformat=VCFv4.2
